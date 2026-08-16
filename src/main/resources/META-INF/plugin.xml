@@ -1,0 +1,47 @@
+<idea-plugin>
+    <!-- 插件唯一 ID -->
+    <id>com.example.deepseek</id>
+    <name>DeepSeek Assistant</name>
+    <vendor>local-dev</vendor>
+
+    <description><![CDATA[
+        <h3>DeepSeek AI Assistant for Android Studio</h3>
+        <p>在 Android Studio 中直接使用 DeepSeek 大模型：</p>
+        <ul>
+            <li>侧边栏聊天面板，随时向 DeepSeek 提问</li>
+            <li>选中代码右键：解释代码 / 优化代码 / 添加注释</li>
+        </ul>
+        <p><b>API Key</b> 通过环境变量 <code>DEEPSEEK_API_KEY</code> 提供。</p>
+    ]]></description>
+
+    <!-- 依赖的平台模块：需要 UI 组件和编辑器的平台能力 -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- 侧边栏聊天工具窗口 -->
+        <toolWindow
+            id="DeepSeek Chat"
+            anchor="right"
+            icon="AllIcons.Actions.Find"
+            factoryClass="com.example.deepseek.ChatToolWindowFactory"/>
+
+        <!-- 设置页：可在这里查看/切换模型 -->
+        <applicationConfigurable
+            id="com.example.deepseek.settings"
+            displayName="DeepSeek Assistant"
+            instance="com.example.deepseek.DeepSeekSettingsConfigurable"/>
+    </extensions>
+
+    <actions>
+        <!-- 编辑区右键菜单分组 -->
+        <group id="DeepSeek.EditorPopupGroup" text="DeepSeek" popup="true">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <action id="DeepSeek.Explain" class="com.example.deepseek.action.ExplainAction"
+                    text="DeepSeek: 解释代码" description="用 DeepSeek 解释选中的代码"/>
+            <action id="DeepSeek.Optimize" class="com.example.deepseek.action.OptimizeAction"
+                    text="DeepSeek: 优化代码" description="用 DeepSeek 优化选中的代码"/>
+            <action id="DeepSeek.Comment" class="com.example.deepseek.action.CommentAction"
+                    text="DeepSeek: 添加注释" description="用 DeepSeek 为选中代码添加注释"/>
+        </group>
+    </actions>
+</idea-plugin>
